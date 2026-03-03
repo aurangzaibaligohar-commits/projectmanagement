@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freelance Project Dashboard</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rose: {
+              50: '#fdf2f8',
+              100: '#fce7f3',
+              200: '#fbcfe8',
+              300: '#f9a8d4',
+              400: '#f472b6',
+              500: '#ec4899',
+              600: '#db2777',
+              700: '#be185d',
+              800: '#9d174d'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+    .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(236, 72, 153, 0.2); border-radius: 3px; }
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(236, 72, 153, 0.4); }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+    .animate-slide-in-left { animation: slideInLeft 0.6s ease-out forwards; }
+    .animate-delay-1 { animation-delay: 0.1s; }
+    .animate-delay-2 { animation-delay: 0.2s; }
+    .animate-delay-3 { animation-delay: 0.3s; }
+    
+    .project-card { 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .project-card:hover { 
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(236, 72, 153, 0.12);
+    }
+    
+    .stat-card {
+      transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(236, 72, 153, 0.1);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #db2777 0%, #ec4899 100%);
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .badge-open {
+      background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+      color: #be185d;
+    }
+    .badge-progress {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      color: #92400e;
+    }
+    .badge-completed {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      color: #065f46;
+    }
+    
+    .form-input {
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      border-color: #ec4899;
+      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+    }
+  </style>
+</head>
+<body class="h-full bg-white font-sans text-gray-900 overflow-hidden">
+  <div class="flex h-full w-full">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col flex-shrink-0 shadow-sm">
+      <!-- Logo -->
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-rose-500 to-rose-600 rounded-lg flex items-center justify-center shadow-lg">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs text-gray-600 font-medium uppercase tracking-wide">Company</p>
+            <p class="text-sm font-bold text-gray-900 font-display" id="company-name">FreelanceHub</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-rose-50 text-rose-700 font-medium transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-3m0 0l7-4 7 4M5 9v10a1 1 0 001 1h12a1 1 0 001-1V9m-9 11l4-4m0 0l4 4m-4-4v4"/>
+          </svg>
+          <span>My Projects</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          <span>Payments</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.856-1.487M15 10a3 3 0 11-6 0 3 3 0 016 0zM16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+          <span>Team</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          <span>Analytics</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <!-- User Card -->
+      <div class="p-4 border-t border-gray-200">
+        <div class="bg-gradient-to-br from-rose-50 to-pink-50 rounded-xl p-4 border border-rose-200">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white font-semibold text-sm shadow-md">
+              CO
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-gray-900 truncate">Sarah Chen</p>
+              <p class="text-xs text-gray-600 truncate">Company Owner</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 h-full">
+      <!-- Header -->
+      <header class="bg-white border-b border-gray-200 px-8 py-5 flex items-center justify-between flex-shrink-0 shadow-sm">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 font-display" id="page-title">My Projects Dashboard</h1>
+          <p class="text-gray-600 text-sm mt-1" id="page-subtitle">Manage your freelance projects and track progress</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button class="p-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">
+            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+          </button>
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-md flex items-center justify-center text-white font-semibold text-sm">
+            SC
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Area -->
+      <main class="flex-1 overflow-auto scrollbar-thin p-8 bg-white">
+        <!-- Post New Project Section -->
+        <div class="mb-8 animate-fade-in-up">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 font-display">Post a New Project</h2>
+                <p class="text-gray-600 text-sm mt-1">Fill out the details below and start receiving bids from freelancers</p>
+              </div>
+              <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center">
+                <svg class="w-7 h-7 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <form class="space-y-6" onsubmit="event.preventDefault();">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Project Title -->
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 mb-2">Project Title</label>
+                  <input type="text" placeholder="e.g., Mobile App Development" class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent">
+                </div>
+
+                <!-- Budget -->
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 mb-2">Budget Range</label>
+                  <input type="text" placeholder="e.g., $500 - $2,000" class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent">
+                </div>
+
+                <!-- Deadline -->
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 mb-2">Deadline</label>
+                  <input type="date" class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent">
+                </div>
+
+                <!-- Category -->
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 mb-2">Category</label>
+                  <select class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent">
+                    <option>Web Development</option>
+                    <option>Mobile App</option>
+                    <option>Design</option>
+                    <option>Marketing</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div>
+                <label class="block text-sm font-semibold text-gray-900 mb-2">Project Description</label>
+                <textarea placeholder="Describe your project in detail..." rows="4" class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent"></textarea>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="flex gap-3 pt-4">
+                <button class="btn-primary px-8 py-3 text-white font-semibold rounded-lg flex items-center gap-2">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                  </svg>
+                  <span id="post-button-text">Post Project</span>
+                </button>
+                <button type="button" class="px-8 py-3 text-gray-700 font-semibold rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors">
+                  Save Draft
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          <!-- Projects List -->
+          <div class="xl:col-span-2">
+            <div class="mb-6 flex items-center justify-between">
+              <h2 class="text-2xl font-bold text-gray-900 font-display">Your Projects</h2>
+              <div class="flex gap-2">
+                <button class="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 font-medium text-sm hover:bg-gray-50 transition-colors">All</button>
+                <button class="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 font-medium text-sm hover:bg-gray-50 transition-colors">Open</button>
+                <button class="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 font-medium text-sm hover:bg-gray-50 transition-colors">Active</button>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Project Card 1 -->
+              <div class="project-card bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-start justify-between mb-4">
+                  <div>
+                    <div class="flex items-center gap-3 mb-2">
+                      <h3 class="text-lg font-bold text-gray-900">E-Commerce Website Redesign</h3>
+                      <span class="badge-open px-3 py-1 rounded-full text-xs font-semibold">Open</span>
+                    </div>
+                    <p class="text-gray-600 text-sm">Complete redesign of our online store with modern UI/UX practices</p>
+                  </div>
+                  <button class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-4 py-4 border-t border-b border-gray-200">
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Budget</p>
+                    <p class="text-lg font-bold text-rose-600 mt-1">$3,500</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Deadline</p>
+                    <p class="text-lg font-bold text-gray-900 mt-1">Dec 15</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Bids</p>
+                    <p class="text-lg font-bold text-rose-600 mt-1">12</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Views</p>
+                    <p class="text-lg font-bold text-gray-900 mt-1">238</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Posted</p>
+                    <p class="text-lg font-bold text-gray-900 mt-1">2 days</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Skills</p>
+                    <p class="text-sm font-bold text-gray-900 mt-1">5</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between mt-4">
+                  <div class="flex gap-2">
+                    <button class="px-4 py-2 rounded-lg text-rose-600 bg-rose-50 hover:bg-rose-100 font-medium text-sm transition-colors">View Bids</button>
+                    <button class="px-4 py-2 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 font-medium text-sm transition-colors">Edit</button>
+                  </div>
+                  <div class="flex items-center gap-2 text-gray-600 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                    <span>238 views</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Project Card 2 -->
+              <div class="project-card bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-start justify-between mb-4">
+                  <div>
+                    <div class="flex items-center gap-3 mb-2">
+                      <h3 class="text-lg font-bold text-gray-900">Mobile App - React Native</h3>
+                      <span class="badge-progress px-3 py-1 rounded-full text-xs font-semibold">In Progress</span>
+                    </div>
+                    <p class="text-gray-600 text-sm">Cross-platform mobile application for inventory management</p>
+                  </div>
+                  <button class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-4 py-4 border-t border-b border-gray-200">
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Budget</p>
+                    <p class="text-lg font-bold text-rose-600 mt-1">$8,200</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Deadline</p>
+                    <p class="text-lg font-bold text-gray-900 mt-1">Jan 10</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Bids</p>
+                    <p class="text-lg font-bold text-rose-600 mt-1">8</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Views</p>
+                    <p class="text-lg font-bold text-gray-900 mt-1">512</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Posted</p>
+                    <p class="text-lg font-bold text-gray-900 mt-1">1 week</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Skills</p>
+                    <p class="text-sm font-bold text-gray-900 mt-1">8</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between mt-4">
+                  <div class="flex gap-2">
+                    <button class="px-4 py-2 rounded-lg text-rose-600 bg-rose-50 hover:bg-rose-100 font-medium text-sm transition-colors">View Bids</button>
+                    <button class="px-4 py-2 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 font-medium text-sm transition-colors">Edit</button>
+                  </div>
+                  <div class="flex items-center gap-2 text-gray-600 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                    <span>512 views</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Project Card 3 -->
+              <div class="project-card bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-start justify-between mb-4">
+                  <div>
+                    <div class="flex items-center gap-3 mb-2">
+                      <h3 class="text-lg font-bold text-gray-900">Brand Identity & Logo Design</h3>
+                      <span class="badge-completed px-3 py-1 rounded-full text-xs font-semibold">Completed</span>
+                    </div>
+                    <p class="text-gray-600 text-sm">Complete branding package including logo, guidelines, and collateral</p>
+                  </div>
+                  <button class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-4 py-4 border-t border-b border-gray-200">
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Budget</p>
+                    <p class="text-lg font-bold text-rose-600 mt-1">$2,000</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Deadline</p>
+                    <p class="text-lg font-bold text-gray-900 mt-1">Nov 30</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Bids</p>
+                    <p class="text-lg font-bold text-rose-600 mt-1">15</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Views</p>
+                    <p class="text-lg font-bold text-gray-900 mt-1">789</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Posted</p>
+                    <p class="text-lg font-bold text-gray-900 mt-1">3 weeks</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 text-xs font-medium uppercase tracking-wide">Skills</p>
+                    <p class="text-sm font-bold text-gray-900 mt-1">6</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between mt-4">
+                  <div class="flex gap-2">
+                    <button class="px-4 py-2 rounded-lg text-rose-600 bg-rose-50 hover:bg-rose-100 font-medium text-sm transition-colors">Leave Feedback</button>
+                    <button class="px-4 py-2 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 font-medium text-sm transition-colors">Archive</button>
+                  </div>
+                  <div class="flex items-center gap-2 text-gray-600 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Completed</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Sidebar - Stats -->
+          <div class="space-y-6">
+            <!-- Total Stats -->
+            <div class="stat-card bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <p class="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Spent</p>
+              <p class="text-4xl font-bold text-rose-600 mt-2 font-display">$13,700</p>
+              <p class="text-gray-600 text-sm mt-3 flex items-center gap-1">
+                <svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+                <span>+$2,100 this month</span>
+              </p>
+            </div>
+
+            <div class="stat-card bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <p class="text-gray-600 text-sm font-medium uppercase tracking-wide">Active Projects</p>
+              <p class="text-4xl font-bold text-rose-600 mt-2 font-display">2</p>
+              <p class="text-gray-600 text-sm mt-3">In progress or open</p>
+            </div>
+
+            <div class="stat-card bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <p class="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Bids</p>
+              <p class="text-4xl font-bold text-rose-600 mt-2 font-display">35</p>
+              <p class="text-gray-600 text-sm mt-3">From active projects</p>
+            </div>
+
+            <!-- Active Developers -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <h3 class="text-lg font-bold text-gray-900 mb-4 font-display">Active Developers</h3>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl border border-rose-200">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white font-semibold text-sm">
+                      JM
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-gray-900">James Martinez</p>
+                      <p class="text-xs text-gray-600">React Developer</p>
+                    </div>
+                  </div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl border border-rose-200">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center text-white font-semibold text-sm">
+                      PR
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-gray-900">Priya Rao</p>
+                      <p class="text-xs text-gray-600">UI/UX Designer</p>
+                    </div>
+                  </div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-semibold text-sm">
+                      SA
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-gray-900">Sofia Anderson</p>
+                      <p class="text-xs text-gray-600">Project Manager</p>
+                    </div>
+                  </div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="bg-gradient-to-br from-rose-500 to-rose-600 rounded-2xl shadow-sm p-6">
+              <h3 class="text-lg font-bold text-white mb-4 font-display">Quick Actions</h3>
+              <div class="space-y-2">
+                <button class="w-full px-4 py-3 text-left rounded-lg hover:bg-white/20 transition-colors font-medium text-white text-sm flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                  </svg>
+                  <span>New Project</span>
+                </button>
+                <button class="w-full px-4 py-3 text-left rounded-lg hover:bg-white/20 transition-colors font-medium text-white text-sm flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  <span>View Invoices</span>
+                </button>
+                <button class="w-full px-4 py-3 text-left rounded-lg hover:bg-white/20 transition-colors font-medium text-white text-sm flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                  </svg>
+                  <span>Browse Talent</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cf374e8874521ea',t:'MTc3MTMxMjE0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

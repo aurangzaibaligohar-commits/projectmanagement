@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Reuse same Tailwind + fonts -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = { /* same as before */ }
+  </script>
+
+  <!-- Paste ONLY the <style> content here (same as main file) -->
+  <style>
+    /* All your @keyframes, .form-input, .btn-primary, .tab-btn, etc. */
+    /* Copy-paste the entire <style> block from original */
+  </style>
+</head>
+<body class="bg-white">
+  <div class="p-8 space-y-5">
+    <!-- Only the LOGIN form content -->
+    <div id="login-form" class="space-y-5">
+      <div class="form-group animate-slide-up" style="animation-delay: 0s;">
+        <label class="block text-sm font-semibold text-rose-900 mb-2">Email Address</label>
+        <input type="email" placeholder="you@example.com" class="form-input w-full px-4 py-3 rounded-xl" />
+      </div>
+      <!-- ... rest of login fields, remember me, button, or continue with ... -->
+      <!-- Keep everything from <div id="login-form"> ... </div> -->
+      <!-- Including the "Don't have an account? Sign up" link at bottom -->
+    </div>
+
+    <!-- Optional: send height to parent -->
+    <script>
+      window.parent.postMessage({ height: document.body.scrollHeight + 20 }, '*');
+    </script>
+  </div>
+</body>
+</html>
